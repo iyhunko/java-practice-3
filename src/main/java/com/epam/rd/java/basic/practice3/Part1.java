@@ -1,11 +1,12 @@
 package com.epam.rd.java.basic.practice3;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Part1 {
 
-    public static String FILE_PATH = "/home/ivan/projects/epam/uwfeuzcd-task3/part1.txt";
+    public final static String FILE_PATH = "/home/ivan/projects/epam/uwfeuzcd-task3/part1.txt";
 
     public static void main(String[] args) {
         String input = Util.getInput(FILE_PATH);
@@ -21,53 +22,10 @@ public class Part1 {
         String convertedResult3 = convert3(input);
         System.out.println("Result of convert3:");
         System.out.println(convertedResult3);
-    }
 
-    public static String[] parseListOfEmails(String input) {
-        String[] lines = input.split("\\n");
-
-        String[] emailProviders = new String[lines.length - 1];
-
-        for (int i = 1; i < lines.length; i++) {
-            String[] parts = lines[i].split(";");
-
-            Pattern regex = Pattern.compile("(?<=@)\\S+");
-            Matcher matcher = regex.matcher(parts[2]);
-            if (matcher.find()) {
-                emailProviders[i - 1] = matcher.group();
-            }
-        }
-
-        return removeDuplicates(emailProviders);
-    }
-
-    public static String[] removeDuplicates(String[] items) {
-        String[] uniqueItems = new String[items.length];
-
-        int numberOfUniqueElements = 0;
-
-        // Comparing each element with all other elements
-        for (int i = 0; i < items.length; i++) {
-            boolean isDuplication = false;
-            for (int j = 0; j < uniqueItems.length; j++) {
-                if (items[i].equals(uniqueItems[j])) {
-                    isDuplication = true;
-                    break;
-                }
-            }
-
-            if (!isDuplication) {
-                uniqueItems[numberOfUniqueElements] = items[i];
-                numberOfUniqueElements++;
-            }
-        }
-
-        String[] result = new String[numberOfUniqueElements];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = uniqueItems[i];
-        }
-
-        return result;
+        String convertedResult4 = convert4(input);
+        System.out.println("Result of convert4:");
+        System.out.println(convertedResult4);
     }
 
     /**
@@ -138,6 +96,71 @@ public class Part1 {
     }
 
     public static String convert4(String input) {
-        return null;
+        String[] lines = input.split("\\n");
+
+        StringBuilder result4 = new StringBuilder();
+
+        if (lines.length > 0) {
+            result4.append(lines[0]).append(";Password").append(System.lineSeparator()).append(System.lineSeparator());
+        }
+
+        for (int i = 1; i < lines.length; i++) {
+            result4.append(lines[i]).append(";").append(generateRandomInteger(1000, 9999)).append(System.lineSeparator());
+        }
+
+        return result4.toString();
+    }
+
+    private static int generateRandomInteger(int min, int max) {
+        Random r = new Random();
+
+        return r.nextInt((max - min)) + min;
+    }
+
+    private static String[] removeDuplicates(String[] items) {
+        String[] uniqueItems = new String[items.length];
+
+        int numberOfUniqueElements = 0;
+
+        // Comparing each element with all other elements
+        for (int i = 0; i < items.length; i++) {
+            boolean isDuplication = false;
+            for (int j = 0; j < uniqueItems.length; j++) {
+                if (items[i].equals(uniqueItems[j])) {
+                    isDuplication = true;
+                    break;
+                }
+            }
+
+            if (!isDuplication) {
+                uniqueItems[numberOfUniqueElements] = items[i];
+                numberOfUniqueElements++;
+            }
+        }
+
+        String[] result = new String[numberOfUniqueElements];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = uniqueItems[i];
+        }
+
+        return result;
+    }
+
+    private static String[] parseListOfEmails(String input) {
+        String[] lines = input.split("\\n");
+
+        String[] emailProviders = new String[lines.length - 1];
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] parts = lines[i].split(";");
+
+            Pattern regex = Pattern.compile("(?<=@)\\S+");
+            Matcher matcher = regex.matcher(parts[2]);
+            if (matcher.find()) {
+                emailProviders[i - 1] = matcher.group();
+            }
+        }
+
+        return removeDuplicates(emailProviders);
     }
 }
