@@ -6,10 +6,12 @@ import java.util.regex.Pattern;
 
 public class Part1 {
 
-    public final static String FILE_PATH = "/home/ivan/projects/epam/uwfeuzcd-task3/part1.txt";
+    public final static String FILE_PATH = System.getProperty("user.dir") + "/part1.txt";
 
     public static void main(String[] args) {
         String input = Util.getInput(FILE_PATH);
+        System.out.println();
+
 
         String convertedResult1 = convert1(input);
         System.out.println("Result of convert1:");
