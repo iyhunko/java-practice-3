@@ -1,17 +1,14 @@
 package com.epam.rd.java.basic.practice3;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Part1 {
 
-    public static void main(String[] args) throws IOException {
-        String filePath = "/home/ivan/projects/epam/uwfeuzcd-task3/part1.txt";
+    public static String FILE_PATH = "/home/ivan/projects/epam/uwfeuzcd-task3/part1.txt";
 
-        String input = Util.getInput(filePath);
+    public static void main(String[] args) {
+        String input = Util.getInput(FILE_PATH);
 
         String convertedResult1 = convert1(input);
         System.out.println("Result of convert1:");
@@ -25,11 +22,11 @@ public class Part1 {
         System.out.println("Result of convert3:");
         System.out.println(convertedResult3);
     }
-    
+
     public static String[] parseListOfEmails(String input) {
         String[] lines = input.split("\\n");
 
-        String[] emailProviders = new String[lines.length-1];
+        String[] emailProviders = new String[lines.length - 1];
 
         for (int i = 1; i < lines.length; i++) {
             String[] parts = lines[i].split(";");
@@ -45,10 +42,32 @@ public class Part1 {
     }
 
     public static String[] removeDuplicates(String[] items) {
-        //Create set from array elements
-        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>( Arrays.asList(items) );
+        String[] uniqueItems = new String[items.length];
 
-        return linkedHashSet.toArray(new String[] {});
+        int numberOfUniqueElements = 0;
+
+        // Comparing each element with all other elements
+        for (int i = 0; i < items.length; i++) {
+            boolean isDuplication = false;
+            for (int j = 0; j < uniqueItems.length; j++) {
+                if (items[i].equals(uniqueItems[j])) {
+                    isDuplication = true;
+                    break;
+                }
+            }
+
+            if (!isDuplication) {
+                uniqueItems[numberOfUniqueElements] = items[i];
+                numberOfUniqueElements++;
+            }
+        }
+
+        String[] result = new String[numberOfUniqueElements];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = uniqueItems[i];
+        }
+
+        return result;
     }
 
     /**
@@ -62,7 +81,7 @@ public class Part1 {
         for (int i = 1; i < lines.length; i++) {
             String[] parts = lines[i].split(";");
 
-            result.append(parts[0]).append(": ").append(parts[2]).append(System.getProperty("line.separator"));
+            result.append(parts[0]).append(": ").append(parts[2]).append(System.lineSeparator());
         }
 
         return result.toString();
@@ -80,7 +99,7 @@ public class Part1 {
             String firstname = names[0];
             String lastname = names[1];
 
-            result.append(lastname).append(" ").append(firstname).append(" (email: ").append(parts[2]).append(")").append(System.getProperty("line.separator"));
+            result.append(lastname).append(" ").append(firstname).append(" (email: ").append(parts[2]).append(")").append(System.lineSeparator());
         }
 
         return result.toString();
@@ -93,8 +112,8 @@ public class Part1 {
 
         StringBuilder result = new StringBuilder();
 
-        for(int j = 0; j < emails.length; j++) {
-            if (emails[j] != null ) {
+        for (int j = 0; j < emails.length; j++) {
+            if (emails[j] != null) {
                 StringBuilder emailLine = new StringBuilder();
 
                 emailLine.append(emails[j]).append(" ==> ");
@@ -102,7 +121,7 @@ public class Part1 {
                 for (int i = 1; i < lines.length; i++) {
                     String[] parts = lines[i].split(";");
 
-                    Pattern regex = Pattern.compile("^.*"+emails[j]+".*$");
+                    Pattern regex = Pattern.compile("^.*" + emails[j] + ".*$");
                     Matcher matcher = regex.matcher(parts[2]);
                     if (matcher.find()) {
                         emailLine.append(parts[0]).append(", ");
@@ -111,7 +130,7 @@ public class Part1 {
 
                 String filledLine = emailLine.toString().replaceAll(", $", "");
 
-                result.append(filledLine).append(System.getProperty("line.separator"));
+                result.append(filledLine).append(System.lineSeparator());
             }
         }
 
