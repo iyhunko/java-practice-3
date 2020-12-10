@@ -18,7 +18,7 @@ public class Part4 {
 
     public static String hash(String input, String algorithm) throws NoSuchAlgorithmException  {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
-        digest.update(input.getBytes(StandardCharsets.UTF_8));
+        digest.update(input.getBytes());
 
         byte[] hash = digest.digest();
         StringBuilder builder = new StringBuilder();
