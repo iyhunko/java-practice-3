@@ -1,11 +1,12 @@
 package com.epam.rd.java.basic.practice3;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Part4 {
 
-    public static void main(String[] args) throws NoSuchAlgorithmException  {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         System.out.println("Result of SHA-256:");
         System.out.println(hash("passwort", "SHA-256"));
 
@@ -15,25 +16,31 @@ public class Part4 {
         System.out.println(hash("password", "MD5"));
     }
 
-    public static String hash(String input, String algorithm) throws NoSuchAlgorithmException  {
+    public static String hash(String input, String algorithm) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
-        digest.update(input.getBytes());
+        digest.update(input.getBytes(StandardCharsets.UTF_8));
 
         byte[] hash = digest.digest();
-        StringBuilder builder = new StringBuilder();
+        char[] chars = new char[hash.length * 2];
 
-        for (byte b : hash) {
-            if (b < 0) {
-                String x = Integer.toHexString(b);
-                String y = x.substring(x.length() - 2);
-                builder.append(y);
-
-                continue;
-            }
-            builder.append(Integer.toHexString(b));
+        for (int i = 0; i < hash.length; i++) {
+            toChars(hash[i], chars, i);
         }
 
-        return builder.toString().toUpperCase();
+        return new String(chars);
+    }
+
+    private static void toChars(byte b, char[] chars, int i) {
+        int upper = b & 0b1111_0000;
+        upper = Math.abs(upper / 16);
+        chars[i * 2] = toHex(upper);
+
+        int lower = b & 0b0000_1111;
+        chars[i * 2 + 1] = toHex(lower);
+    }
+
+    private static char toHex(int a) {
+        return (a < 10) ? (char) (a + '0') : (char) (a + 'A' - 10);
     }
 
 }
