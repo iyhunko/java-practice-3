@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 
 public class Part3 {
 
-    public final static String FILE_PATH = System.getProperty("user.dir") + "/part3.txt";
+    private static final String FILE_PATH = System.getProperty("user.dir") + "/part3.txt";
 
-    public final static String REGEX = "[a-zA-Zа-яА-ЯіІїЇґҐ]+";
+    private static final String REGEX = "[a-zA-Zа-яА-ЯіІїЇґҐ]+";
 
     public static void main(String[] args) {
         String input = Util.getInput(FILE_PATH);

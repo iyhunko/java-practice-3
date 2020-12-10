@@ -49,41 +49,49 @@ public class Part5 {
     }
 
     public static int roman2Decimal(String roman) {
-        int value = 0;
+        int result = 0;
         for (int i = 0; i < roman.length(); i++) {
-            char s = roman.charAt(i);
-            switch (s) {
-                case 'I':
-                    if (i + 1 < roman.length()
-                            && (roman.charAt(i + 1) == 'V' || roman.charAt(i + 1) == 'X')) {
-                        value -= 1;
-                        break;
-                    }
-                    value += 1;
-                    break;
-                case 'V':
-                    value += 5;
-                    break;
-                case 'X':
-                    value += 10;
-                    break;
-                case 'L':
-                    if (i > 0 && roman.charAt(i - 1) == 'X') {
-                        value += 30;
-                        break;
-                    }
-                    value += 50;
-                    break;
-                default:
-                    if (i > 0 && roman.charAt(i - 1) == 'X') {
-                        value += 80;
-                        break;
-                    }
-                    value += 100;
-            }
+            char letter = roman.charAt(i);
+            result += convertRomanCharToDecimal(letter, roman, i);
         }
 
-        return value;
+        return result;
+    }
+
+    private static int convertRomanCharToDecimal(char letter, String roman, int i) {
+        int result = 0;
+
+        switch (letter) {
+            case 'I':
+                if (i + 1 < roman.length()
+                        && (roman.charAt(i + 1) == 'V' || roman.charAt(i + 1) == 'X')) {
+                    result -= 1;
+                    break;
+                }
+                result += 1;
+                break;
+            case 'V':
+                result += 5;
+                break;
+            case 'X':
+                result += 10;
+                break;
+            case 'L':
+                if (i > 0 && roman.charAt(i - 1) == 'X') {
+                    result += 30;
+                    break;
+                }
+                result += 50;
+                break;
+            default:
+                if (i > 0 && roman.charAt(i - 1) == 'X') {
+                    result += 80;
+                    break;
+                }
+                result += 100;
+        }
+
+        return result;
     }
 
 
