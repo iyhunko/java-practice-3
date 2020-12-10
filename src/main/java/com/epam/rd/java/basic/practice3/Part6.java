@@ -7,6 +7,6 @@ public class Part6 {
     }
 
     public static String convert(String input) {
-        return null;
+        return input.toLowerCase();
     }
 }

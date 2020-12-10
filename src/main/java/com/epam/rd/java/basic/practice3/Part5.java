@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Part5 {
 
-    private static final String[] NUMBERS = new String[]{
+    private static final String[] builderS = new String[]{
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"
     };
 
@@ -16,56 +16,36 @@ public class Part5 {
     }
 
     public static String decimal2Roman(int dec) {
-        StringBuilder number = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
         int j = 0;
         if (dec >= 10 && dec % 10 == 0) {
             j = 1;
         }
-
         for (int i = 0; i < dec / 10 + 1 - j; i++) {
             if ((i != dec / 10 || dec % 10 == 0) && dec >= 10) {
-                number.append(NUMBERS[9]);
-
+                builder.append(builderS[9]);
             } else {
-                number.append(NUMBERS[dec % 10 - 1]);
-            }
-
-        }
-
-        int loc = 0;
-        if (dec >= 100) {
-            Pattern p = Pattern.compile("X{10,}?");
-            Matcher m = p.matcher(number);
-            while (m.find()) {
-                number.replace(m.start(), m.end(), "C");
-                m = p.matcher(number);
-                loc = dec % 100;
+                builder.append(builderS[dec % 10 - 1]);
             }
         }
+
+        int loc = handleBiggerThan100(dec, builder);
 
         int compareTo = (loc == 0) ? dec : loc;
 
         if (compareTo >= 90 && compareTo < 100) {
-            Pattern p = Pattern.compile("(.+)(X{8})");
-            Matcher m = p.matcher(number);
-            m.find();
-            number.replace(m.start(2), m.end(2), "C");
-        }
-        if (compareTo >= 40 && compareTo < 50) {
-            Pattern p = Pattern.compile("(.+)(X{3})");
-            Matcher m = p.matcher(number);
-            m.find();
-            number.replace(m.start(2), m.end(2), "L");
-        }
-        if (compareTo >= 50 && compareTo < 90) {
-            Pattern p = Pattern.compile("(X{5})");
-            Matcher m = p.matcher(number);
-            m.find();
-            number.replace(m.start(1), m.end(1), "L");
+            handleFrom90To100(builder);
         }
 
-        return number.toString();
+        if (compareTo >= 40 && compareTo < 50) {
+            handleFrom40To50(builder);
+        }
+        if (compareTo >= 50 && compareTo < 90) {
+            handleFrom50To100(builder);
+        }
+
+        return builder.toString();
     }
 
     public static int roman2Decimal(String roman) {
@@ -104,5 +84,42 @@ public class Part5 {
         }
 
         return value;
+    }
+
+
+    private static int handleBiggerThan100(int dec, StringBuilder builder) {
+        int loc = 0;
+        if (dec >= 100) {
+            Pattern p = Pattern.compile("X{10,}?");
+            Matcher m = p.matcher(builder);
+            while (m.find()) {
+                builder.replace(m.start(), m.end(), "C");
+                m = p.matcher(builder);
+                loc = dec % 100;
+            }
+        }
+
+        return loc;
+    }
+
+    private static void handleFrom90To100(StringBuilder builder) {
+        Pattern p = Pattern.compile("(.+)(X{8})");
+        Matcher m = p.matcher(builder);
+        m.find();
+        builder.replace(m.start(2), m.end(2), "C");
+    }
+
+    private static void handleFrom40To50(StringBuilder builder) {
+        Pattern p = Pattern.compile("(.+)(X{3})");
+        Matcher m = p.matcher(builder);
+        m.find();
+        builder.replace(m.start(2), m.end(2), "L");
+    }
+
+    private static void handleFrom50To100(StringBuilder builder) {
+        Pattern p = Pattern.compile("(X{5})");
+        Matcher m = p.matcher(builder);
+        m.find();
+        builder.replace(m.start(1), m.end(1), "L");
     }
 }

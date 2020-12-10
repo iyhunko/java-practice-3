@@ -8,12 +8,12 @@ public class Part4 {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
         System.out.println("Result of SHA-256:");
-        System.out.println(hash("passwort", "SHA-256"));
+        System.out.println(hash("input", "SHA-256"));
 
         System.out.println();
 
         System.out.println("Result of MD5:");
-        System.out.println(hash("password", "MD5"));
+        System.out.println(hash("input", "MD5"));
     }
 
     public static String hash(String input, String algorithm) throws NoSuchAlgorithmException {

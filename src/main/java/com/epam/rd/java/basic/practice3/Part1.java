@@ -8,6 +8,8 @@ public class Part1 {
 
     public final static String FILE_PATH = System.getProperty("user.dir") + "/part1.txt";
 
+    public static Random random = new Random();
+
     public static void main(String[] args) {
         String input = Util.getInput(FILE_PATH);
         System.out.println();
@@ -114,9 +116,7 @@ public class Part1 {
     }
 
     private static int generateRandomInteger(int min, int max) {
-        Random r = new Random();
-
-        return r.nextInt((max - min)) + min;
+        return random.nextInt((max - min)) + min;
     }
 
     private static String[] removeDuplicates(String[] items) {
