@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Part5 {
 
-    private static final String[] builderS = new String[]{
+    public static final String[] builderS = new String[]{
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"
     };
 
